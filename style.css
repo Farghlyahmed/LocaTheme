@@ -2555,3 +2555,27 @@ input.search-submit{
         margin-top:70px;
     }
 }
+
+
+/*dropdown*/
+.menu li.menu-item>a:hover{
+color:white;
+}
+
+.menu li.menu-item>a ,.menu li.menu-item.active > a{
+    color:white;
+}
+
+ul.dropdown-menu li.menu-item a{
+    color: black !important;
+}
+ul.dropdown-menu li.menu-item>a:hover{
+    color: white !important;
+}
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus{
+    background-color: white;
+    color:#fff;
+}
+.dropdown-menu>.active>a:hover{
+    background-color: #FF823A;
+}
