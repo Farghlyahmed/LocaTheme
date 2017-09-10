@@ -107,13 +107,11 @@
                 </div>
                 <ul class="hidden-sm hidden-xs">
                     <li>
-                        <a href="index.html">Home </a>
+                    <?php wp_nav_menu(array(
+                            'location_theme'=>'primary'
+                        ));
+                        ?>
                     </li>
-                    <?php 
-                        wp_nav_menu(array(
-                          'theme_location'=>'primary'
-                        ))
-                    ?>
                     
                     
                 </ul>
