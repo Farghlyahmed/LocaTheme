@@ -2579,3 +2579,9 @@ ul.dropdown-menu li.menu-item>a:hover{
 .dropdown-menu>.active>a:hover{
     background-color: #FF823A;
 }
+.navbar-nav >li.current_page_item a, li.current-menu-item a, li.current-menu-parent,
+.navbar-nav >li.current_page_parent a
+{
+    color: white;
+    background-color: #FF823A;
+}
