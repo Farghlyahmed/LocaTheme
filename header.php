@@ -15,8 +15,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700" rel="stylesheet">
     <!-- Vender -->
-    <link href="<?php bloginfo('stylesheet_directory');?>/assets/css/font-awesome.min.css" rel="stylesheet" />
     <link href="<?php bloginfo('stylesheet_directory');?>/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?php bloginfo('stylesheet_directory');?>/assets/css/font-awesome.min.css" rel="stylesheet" />
+  
     <link href="<?php bloginfo('stylesheet_directory'); ?>/assets/css/normalize.min.css" rel="stylesheet" />
     <link href="<?php bloginfo('stylesheet_directory');?>/assets/css/owl.carousel.min.css" rel="stylesheet" />
     <!-- Main CSS (SCSS Compile) -->
@@ -108,7 +109,11 @@
                 <ul class="hidden-sm hidden-xs">
                     <li>
                     <?php wp_nav_menu(array(
-                            'location_theme'=>'primary'
+                            'location_theme'=>'primary',
+                            'depth'         =>'0',
+                            'container'     =>false,
+                            'menu_class'    =>'nav navbar-nav',
+                            'walker'        => new BootstrapNavMenuWalker()
                         ));
                         ?>
                     </li>
