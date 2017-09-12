@@ -25,8 +25,15 @@ get_header(); ?>
             
 			get_template_part( 'template-parts/content-post', get_post_type() );
 
-			the_post_navigation();
-
+			/*
+            
+             * the_post_navigation(); --> to display the post navigation next and previous 
+             * next_post_link( '<strong>%link</strong>' ); --> to get next post
+             * previous_post_link( '%link', '%title', TRUE, ' ', 'neighborhood' );
+             * 
+             * 
+             * /
+*/
 			// If comments are open or we have at least one comment, load up the comment template.
 			if ( comments_open() || get_comments_number() ) :
 				comments_template();
