@@ -154,6 +154,8 @@ add_action( 'after_setup_theme', 'loca_content_width', 0 );
  *
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
+
+
 function loca_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar', 'loca' ),
@@ -239,12 +241,16 @@ function bac_PostViews($post_ID) {
     }
 }
 
+
+/*get the excerpt*/
 function new_excerpt_more($more){
     global $post;
     return '...<a class="moretag btn btn-sucess"href="'.get_permalink($post->ID).'">continue reading &raquo; </a>';
 }
 add_filter('excerpt_more','new_excerpt_more');
+/*end of get excerpt*/
 
+/*limit words in post title*/
 function limit_word_count($title) {
         $len = 10; //change this to the number of words
     if (str_word_count($title) > $len) {
@@ -279,7 +285,7 @@ function title_words($title,$count){
 
 
 /*get post view count */
-function getPostViews($postID){
+/*function getPostViews($postID){
     $count_key = 'post_views_count';
     $count = get_post_meta($postID, $count_key, true);
     if($count==''){
@@ -302,7 +308,7 @@ function setPostViews($postID) {
     }
 }
 // Remove issues with prefetching adding extra views
-remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);*/
 
 
 /*get the excerpt by Id*/
@@ -327,37 +333,18 @@ function remove_thumbnail_dimensions( $html, $post_id, $post_image_id ) {
     $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
     return $html;
 }
-add_filter( 'post_thumbnail_html', 'remove_thumbnail_dimensions', 10, 3 );
+3 );
 
-function twitter_share_custom_options( $options, $defaults, $attributes )
-{
-  $options['size'] = 'large';
-  return $options;
-}
-add_filter( 'shortcode_atts_twitter_share', 'twitter_share_custom_options', 10, 3 );
-
-/*change login url*/
-
-/*add_filter('site_url',  'wplogin_filter', 10, 3);
-function wplogin_filter( $url, $path, $orig_scheme )
-{
- $old  = array( "/(wp-login\.php)/");
- $new  = array( "b-login");
- return preg_replace( $old, $new, $url, 1);
-}*/
 
 
 /*
   class of drop down menu
 */
-    
 
-
-////////////////////////////////////////Copy class to functions///////////////////////////////////////////////////
 
 class BootstrapNavMenuWalker extends Walker_Nav_Menu {
 
-
+    // &$output, $depth = 0
 	function start_lvl( &$output, $depth = 0, $args = array() ) {
 
 		$indent = str_repeat( "\t", $depth );
@@ -463,96 +450,10 @@ class BootstrapNavMenuWalker extends Walker_Nav_Menu {
 
 }
 
-
-
-/*
-    ** pagination 
-*/
-
-function numeric_posts_nav(){
- 
-    if( is_singular() )
-        return;
- 
-    global $wp_query;
- 
-    /** Stop execution if there's only 1 page */
-    if( $wp_query->max_num_pages <= 1 )
-        return;
- 
-    $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
-    $max   = intval( $wp_query->max_num_pages );
- 
-    /** Add current page to the array */
-    if ( $paged >= 1 )
-        $links[] = $paged;
- 
-    /** Add the pages around the current page to the array */
-    if ( $paged >= 3 ) {
-        $links[] = $paged - 1;
-        $links[] = $paged - 2;
-    }
- 
-    if ( ( $paged + 2 ) <= $max ) {
-        $links[] = $paged + 2;
-        $links[] = $paged + 1;
-    }
- 
-    echo '<div class="navigation"><ul>' . "\n";
- 
-    /** Previous Post Link */
-    if ( get_previous_posts_link() )
-        printf( '<li>%s</li>' . "\n", get_previous_posts_link() );
- 
-    /** Link to first page, plus ellipses if necessary */
-    if ( ! in_array( 1, $links ) ) {
-        $class = 1 == $paged ? ' class="active"' : '';
- 
-        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), '1' );
- 
-        if ( ! in_array( 2, $links ) )
-            echo '<li>…</li>';
-    }
- 
-    /** Link to current page, plus 2 pages in either direction if necessary */
-    sort( $links );
-    foreach ( (array) $links as $link ) {
-        $class = $paged == $link ? ' class="active"' : '';
-        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
-    }
- 
-    /** Link to last page, plus ellipses if necessary */
-    if ( ! in_array( $max, $links ) ) {
-        if ( ! in_array( $max - 1, $links ) )
-            echo '<li>…</li>' . "\n";
- 
-        $class = $paged == $max ? ' class="active"' : '';
-        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $max );
-    }
- 
-    /** Next Post Link */
-    if ( get_next_posts_link() )
-        printf( '<li>%s</li>' . "\n", get_next_posts_link() );
- 
-    echo '</ul></div>' . "\n";
- 
-}
-
-
-
-
-/*
-    ** end of pagination
-*/
-
-
-
-
-
-
 /*
     * end of class dropdown menu
 */
+
 
 /**
  * Implement the Custom Header feature.
