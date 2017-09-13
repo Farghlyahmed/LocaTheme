@@ -65,8 +65,13 @@ function mytheme_style(){
 }
 add_action('wp_enqueue_scripts','mytheme_style');
  */       
-        
-        
+      
+// active menu
+add_filter( 'wp_list_categories', 'replace_current_cat_css_class' );
+
+function replace_current_cat_css_class( $html ) {
+    return str_replace( ' current-cat', ' active', $html );
+}
 /*custom logo setup*/
 function themename_custom_logo_setup() {
     $defaults = array(
@@ -265,7 +270,8 @@ function title_words($title,$count){
         $title_array = explode(' ', $title);
         $result = '';
        for ($i = 0; $i < $count && isset($title_array [$i]); $i++) {
-        $result .= $words[$i].' ';
+        $result .= $count[$i].' ';
+        /*$result .= $words[$i].' '*/
        }
     return $result;
 
@@ -352,7 +358,7 @@ function wplogin_filter( $url, $path, $orig_scheme )
 class BootstrapNavMenuWalker extends Walker_Nav_Menu {
 
 
-	function start_lvl( &$output, $depth ) {
+	function start_lvl( &$output, $depth = 0, $args = array() ) {
 
 		$indent = str_repeat( "\t", $depth );
 		$submenu = ($depth > 0) ? ' sub-menu' : '';
@@ -458,10 +464,86 @@ class BootstrapNavMenuWalker extends Walker_Nav_Menu {
 }
 
 
-//////////////////////////Add This link to your menu///////////////////////////////
 
-// 'walker' => new BootstrapNavMenuWalker();
+/*
+    ** pagination 
+*/
 
+function numeric_posts_nav(){
+ 
+    if( is_singular() )
+        return;
+ 
+    global $wp_query;
+ 
+    /** Stop execution if there's only 1 page */
+    if( $wp_query->max_num_pages <= 1 )
+        return;
+ 
+    $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+    $max   = intval( $wp_query->max_num_pages );
+ 
+    /** Add current page to the array */
+    if ( $paged >= 1 )
+        $links[] = $paged;
+ 
+    /** Add the pages around the current page to the array */
+    if ( $paged >= 3 ) {
+        $links[] = $paged - 1;
+        $links[] = $paged - 2;
+    }
+ 
+    if ( ( $paged + 2 ) <= $max ) {
+        $links[] = $paged + 2;
+        $links[] = $paged + 1;
+    }
+ 
+    echo '<div class="navigation"><ul>' . "\n";
+ 
+    /** Previous Post Link */
+    if ( get_previous_posts_link() )
+        printf( '<li>%s</li>' . "\n", get_previous_posts_link() );
+ 
+    /** Link to first page, plus ellipses if necessary */
+    if ( ! in_array( 1, $links ) ) {
+        $class = 1 == $paged ? ' class="active"' : '';
+ 
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), '1' );
+ 
+        if ( ! in_array( 2, $links ) )
+            echo '<li>…</li>';
+    }
+ 
+    /** Link to current page, plus 2 pages in either direction if necessary */
+    sort( $links );
+    foreach ( (array) $links as $link ) {
+        $class = $paged == $link ? ' class="active"' : '';
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
+    }
+ 
+    /** Link to last page, plus ellipses if necessary */
+    if ( ! in_array( $max, $links ) ) {
+        if ( ! in_array( $max - 1, $links ) )
+            echo '<li>…</li>' . "\n";
+ 
+        $class = $paged == $max ? ' class="active"' : '';
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $max );
+    }
+ 
+    /** Next Post Link */
+    if ( get_next_posts_link() )
+        printf( '<li>%s</li>' . "\n", get_next_posts_link() );
+ 
+    echo '</ul></div>' . "\n";
+ 
+}
+
+
+
+
+/*
+    ** end of pagination
+*/
 
 
 
