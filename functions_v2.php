@@ -6,6 +6,9 @@
  *
  * @package loca
  */
+/*
+    ** functions v2
+*/
 
 if ( ! function_exists( 'loca_setup' ) ) :
 	/**
