@@ -1,5 +1,5 @@
 # LocaTheme
-## Creator
+** Creator **
 * Farghly
   - [Facebook](https://www.facebook.com/farghaly.Ahmed2016)
   - [Linkedin](https://www.linkedin.com/in/farghlyahmed/)
