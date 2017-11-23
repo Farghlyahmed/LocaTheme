@@ -1,11 +1,15 @@
 /**Preload**/
-$(window).load(function () {
+
+/*jslint browser: true*/
+/*global $, jQuery, alert*/
+
+$(document).ready(function() {
+    'use strict';
+    $(window).load(function () {
     $('#page-loader').delay(500).fadeOut(400, function () {
         $('body').fadeIn();
     });
-});
-
-$(document).ready(function ($) {
+   });
     /**Menu Mobile**/
     $('.menu-icon').click(function () {
         $('body').toggleClass("open-menu");
@@ -16,7 +20,7 @@ $(document).ready(function ($) {
             $(submenu).slideUp();
             $(this).removeClass("open-submenu-active");
         }
-        else {
+         else {
             $(submenu).slideDown();
             $(this).addClass("open-submenu-active");
         }
@@ -43,8 +47,12 @@ $(document).ready(function ($) {
         navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"]
     });*/
     /**Review slider**/
-    $('.owl-review ,.owl-spotlight').owlCarousel({
+    $('.owl-spotlight').owlCarousel({
         loop: true,
+       /* autoplay:500,*/
+        autoplay:true,
+        autoplayTimeout:3000,
+        smartSpeed:900,
         nav: true,
         items: 1,
         mouseDrag: false,
@@ -134,5 +142,16 @@ $(document).ready(function ($) {
 		
 		$.scrollUp();
     
+   
+jQuery(document).ready(function($) {
+	  $('ul.nav li.dropdown, ul.nav li.dropdown-submenu').hover(function() {
+			$(this).find(' > .dropdown-menu').stop(true, true).delay(200).fadeIn();
+		}, function() {
+			$(this).find(' > .dropdown-menu').stop(true, true).delay(200).fadeOut();
+		});
+	});
+		
+	
+	
  
 });

@@ -19,6 +19,7 @@ get_header(); ?>
 		
 				<?php
 					the_archive_title( '<div class="page-title box-caption"><span>', '</span></div>' );
+                    
 				?>
 			
 
@@ -35,7 +36,7 @@ get_header(); ?>
 
 			endwhile;
 
-			the_posts_navigation();
+			//the_posts_navigation();
 
 		else :
 

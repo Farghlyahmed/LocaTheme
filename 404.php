@@ -21,6 +21,7 @@ get_header(); ?>
                 <a href="<?php echo get_home_url();?>" class="my-btn btn-go-home">GO HOME</a>
 
             </div>
+            
         </div>
              <div class="col-md-4 col-sm-12">
                  <?php get_sidebar();?>

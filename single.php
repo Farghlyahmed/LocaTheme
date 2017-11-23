@@ -15,11 +15,9 @@ get_header(); ?>
 <div class="row">
                 <!--colleft-->
         <div class="col-md-8 col-sm-12">
-            <div class="box-caption">
-              <!--  <span>category news</span>-->
-            </div>
+           
             <!--list-news-cate-->
-      <div class="list-news-cate">
+        <div class="list-news-cate">
 		<?php
 		while ( have_posts() ) : the_post();
             

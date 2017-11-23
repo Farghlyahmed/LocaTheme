@@ -1,3 +1,4 @@
+
 <?php
 /**
  * loca functions and definitions
@@ -72,8 +73,9 @@ add_filter( 'wp_list_categories', 'replace_current_cat_css_class' );
 function replace_current_cat_css_class( $html ) {
     return str_replace( ' current-cat', ' active', $html );
 }
+        
 /*custom logo setup*/
-function themename_custom_logo_setup() {
+function loca_custom_logo_setup() {
     $defaults = array(
         'height'      => 100,
         'width'       => 400,
@@ -83,18 +85,16 @@ function themename_custom_logo_setup() {
     );
     add_theme_support( 'custom-logo', $defaults );
 }
-        
 add_action( 'after_setup_theme', 'loca_custom_logo_setup' );
+/* end of custom logo setup */
 
-if ( function_exists( 'the_custom_logo' ) ) {
-    the_custom_logo();
-}
-
-		// This theme uses wp_nav_menu() in one location.
+// register primary menu.
 register_nav_menus( array(
             'primary' => esc_html__( 'Primary', 'loca' )
 			
 ) );
+/*end of register menu*/
+        
         /**
          * add support to search form
          * 
@@ -195,7 +195,36 @@ function loca_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'loca_scripts' );
 
+/*
+    ** register post type
+*/
+register_post_type( 'slider',
+    array(
+    'labels' => array(
+    'name' => __( 'sliders', 'loca' ),
+    'singular_name' => __( 'slider', 'loca' )
+    ),
+    'public' => true,
+    'has_archive' => true,
+    )
+);
 
+
+
+/*
+    ** end of register post type
+*/
+
+/*
+    ** register another post type
+*/
+
+
+
+
+/*
+    ** end of movie posts
+*/
 
 
 /**
@@ -204,43 +233,20 @@ add_action( 'wp_enqueue_scripts', 'loca_scripts' );
     * 
 */
 //Set the Post Custom Field in the WP dashboard as Name/Value pair 
-function bac_PostViews($post_ID) {
- 
-    //Set the name of the Posts Custom Field.
-    $count_key = 'post_views_count'; 
-     
-    //Returns values of the custom field with the specified key from the specified post.
-    $count = get_post_meta($post_ID, $count_key, true);
-     
-    //If the the Post Custom Field value is empty. 
-    if($count == ''){
-        $count = 0; // set the counter to zero.
-         
-        //Delete all custom fields with the specified key from the specified post. 
-        delete_post_meta($post_ID, $count_key);
-         
-        //Add a custom (meta) field (Name/value)to the specified post.
-        add_post_meta($post_ID, $count_key, '0');
-        return $count . ' View';
-     
-    //If the the Post Custom Field value is NOT empty.
+function wpb_set_post_views($postID) {
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
     }else{
-        $count++; 
-        //increment the counter by 1.
-        //Update the value of an existing meta key (custom field) for the specified post.
-        update_post_meta($post_ID, $count_key, $count);
-         
-        //If statement, is just to have the singular form 'View' for the value '1'
-        if($count == '1'){
-        return $count . ' View';
-        }
-        //In all other cases return (count) Views
-        else {
-        return $count . ' Views';
-        }
+        $count++;
+        update_post_meta($postID, $count_key, $count);
     }
 }
-
+//To keep the count accurate, lets get rid of prefetching
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 /*get the excerpt*/
 function new_excerpt_more($more){
@@ -284,32 +290,6 @@ function title_words($title,$count){
 }
 
 
-/*get post view count */
-/*function getPostViews($postID){
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-        return "0 View";
-    }
-    return $count.' Views';
-}
-function setPostViews($postID) {
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        $count = 0;
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-    }else{
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
-}
-// Remove issues with prefetching adding extra views
-remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);*/
-
 
 /*get the excerpt by Id*/
 function robins_get_the_excerpt($post_id) {
@@ -332,10 +312,79 @@ function robins_get_the_excerpt($post_id) {
 function remove_thumbnail_dimensions( $html, $post_id, $post_image_id ) {
     $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
     return $html;
+};
+
+/*pagination*/
+function numeric_posts_nav() {
+ 
+    if( is_singular() )
+        return;
+ 
+    global $wp_query;
+ 
+    /** Stop execution if there's only 1 page */
+    if( $wp_query->max_num_pages <= 1 )
+        return;
+ 
+    $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+    $max   = intval( $wp_query->max_num_pages );
+ 
+    /** Add current page to the array */
+    if ( $paged >= 1 )
+        $links[] = $paged;
+ 
+    /** Add the pages around the current page to the array */
+    if ( $paged >= 3 ) {
+        $links[] = $paged - 1;
+        $links[] = $paged - 2;
+    }
+ 
+    if ( ( $paged + 2 ) <= $max ) {
+        $links[] = $paged + 2;
+        $links[] = $paged + 1;
+    }
+ 
+    echo '<div class="navigation"><ul>' . "\n";
+ 
+    /** Previous Post Link */
+    if ( get_previous_posts_link() )
+        printf( '<li>%s</li>' . "\n", get_previous_posts_link() );
+ 
+    /** Link to first page, plus ellipses if necessary */
+    if ( ! in_array( 1, $links ) ) {
+        $class = 1 == $paged ? ' class="active"' : '';
+ 
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), '1' );
+ 
+        if ( ! in_array( 2, $links ) )
+            echo '<li>…</li>';
+    }
+ 
+    /** Link to current page, plus 2 pages in either direction if necessary */
+    sort( $links );
+    foreach ( (array) $links as $link ) {
+        $class = $paged == $link ? ' class="active"' : '';
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
+    }
+ 
+    /** Link to last page, plus ellipses if necessary */
+    if ( ! in_array( $max, $links ) ) {
+        if ( ! in_array( $max - 1, $links ) )
+            echo '<li>…</li>' . "\n";
+ 
+        $class = $paged == $max ? ' class="active"' : '';
+        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $max );
+    }
+ 
+    /** Next Post Link */
+    if ( get_next_posts_link() )
+        printf( '<li>%s</li>' . "\n", get_next_posts_link() );
+ 
+    echo '</ul></div>' . "\n";
+ 
 }
-3 );
 
-
+/*end of pagination*/
 
 /*
   class of drop down menu
@@ -454,6 +503,55 @@ class BootstrapNavMenuWalker extends Walker_Nav_Menu {
     * end of class dropdown menu
 */
 
+
+
+
+/* text customization*/
+add_action( 'customize_register', 'loca_register_theme_customizer' );
+/*
+ * Register Our Customizer Stuff Here
+ */
+function loca_register_theme_customizer( $wp_customize ) {
+ // Create custom panel.
+     $wp_customize->add_panel( 'text_blocks', array(
+     'priority' => 500,
+     'theme_supports' => '',
+     'title' => __( 'Text Blocks', 'loca' ),
+     'description' => __( 'Set editable text for certain content.', 'loca' ),
+     ) );
+     // Add Footer Text
+     // Add section.
+     $wp_customize->add_section( 'custom_footer_text' , array(
+     'title' => __('Change Footer Text','loca'),
+     'panel' => 'text_blocks',
+     'priority' => 10
+     ) );
+     // Add setting
+     $wp_customize->add_setting( 'footer_text_block', array(
+     'default' => __( 'Write you text here', 'loca' ),
+     'sanitize_callback' => 'sanitize_text'
+     ) );
+     // Add control
+     $wp_customize->add_control( new WP_Customize_Control(
+     $wp_customize,
+     'custom_footer_text',
+     array(
+     'label' => __( 'Footer Text', 'loca' ),
+     'section' => 'custom_footer_text',
+     'settings' => 'footer_text_block',
+     'type' => 'textarea'
+     )
+     )
+     );
+     // Sanitize text
+     function sanitize_text( $text ) {
+     return sanitize_text_field( $text );
+     }
+}
+
+
+
+/*end of text customization*/
 
 /**
  * Implement the Custom Header feature.

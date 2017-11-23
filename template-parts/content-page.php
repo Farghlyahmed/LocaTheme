@@ -8,7 +8,7 @@
  */
 
 ?>
-  <h1> Hello from here this is content-page</h1>
+
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
@@ -45,6 +45,7 @@
 					'</span>'
 				);
 			?>
+			
 		</footer><!-- .entry-footer -->
 	<?php endif; ?>
 </article><!-- #post-<?php the_ID(); ?> -->

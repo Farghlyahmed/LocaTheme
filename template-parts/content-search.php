@@ -27,7 +27,7 @@
                 </a>
                 <em></em>
                 <span>
-                    <?php the_date();;?>
+                    <?php the_date();?>
                 </span>
 
             </div>

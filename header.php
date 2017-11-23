@@ -6,7 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="congnd91">
-    <title>locatheme</title>
+    <?php
+        if ( ! function_exists( '_wp_render_title_tag' ) ) {
+            function theme_slug_render_title() {
+        ?>
+        <title><?php wp_title( '|', true, 'right' ); ?></title>
+        <?php
+            }
+            add_action( 'wp_head', 'theme_slug_render_title' );
+        }
+        ?>
     <!-- Favicons -->
     <link rel="shortcut icon" href="<?php bloginfo('template_directory');?>/assets/images/favicon.png">
     <link rel="shortcut icon" href="<?php bloginfo('template_directory');?>/assets/images/favicon.png">
@@ -41,9 +50,14 @@
     <nav class="menu-res hidden-lg hidden-md ">
         <div class="menu-res-inner">
             <ul>
-               <?php  wp_nav_menu(array(
-                    'theme_location' =>'primary'
-                    )); ?>
+               <?php wp_nav_menu(array(
+                            'location_theme'=>'primary',
+                            'depth'         =>'0',
+                            'container'     =>false,
+                            'menu_class'    =>'nav navbar-nav',
+                            'walker'        => new BootstrapNavMenuWalker()
+                        ));
+                        ?>
             </ul>
         </div>
     </nav>
@@ -54,48 +68,47 @@
             <!--header-->
             <header class="header">
                 <div class="row">
+                   <!-- start-->
+                 
+                   <!-- end  -->
                     <div class="col-md-3 col-sm-4 col-xs-12">
-                        <a href="#" class="logo">
-                            <img alt="Logo" src="<?php bloginfo('template_directory');?>/assets/images/logo.png" />
-                        </a>
+                      <a href="index.php">
+                       <?php
+                            $custom_logo_id = get_theme_mod( 'custom_logo' );
+                            $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+                            if ( has_custom_logo() ) {
+                                    echo '<img src="'. esc_url( $logo[0] ) .'">';
+                            } else {?>
+                                   <img src=<?php bloginfo('template_url');?>/assets/images/loca.png />;
+                           <?php  }
+                            ?>
+                       </a>
+                       
                     </div>
                     <div class="col-md-6 col-md-offset-3 col-sm-8  text-right col-xs-12 hidden-xs">
                         <div class="owl-carousel owl-special">
+                             <?php  $the_query = new WP_Query( array ( 'orderby' => 'rand', 'posts_per_page' => '5' ) );
+                                    // output the random post
+                                while ( $the_query->have_posts() ) : $the_query->the_post();?>
                             <div>
-                               
                                 <div class="special-news">
-                                    <a href="#">
-                                        <img alt="" src="<?php  bloginfo('template_directory');?>/assets/images/product/17.jpg" />
+                                    <a href="<?php echo esc_url( get_permalink() );?>">
+                                        <?php the_post_thumbnail(); ?>
                                     </a>
-                                    <h3><a href="#">Apple iPhone 7 review </a></h3>
+                                    <h3><a href="<?php echo esc_url( get_permalink() );?>"><?php limit_word_count(the_title());?> </a></h3>
                                     <div class="meta-post">
                                         <a href="#">
-                                            Ashley Ford
+                                            <?php the_author(); ?>
                                         </a>
                                         <em></em>
                                         <span>
-                                            21 Sep 2016
+                                            <?php echo get_the_date('d-M-Y')?>
                                         </span>
                                     </div>
                                 </div>
+                              
                             </div>
-                            <div>
-                                <div class="special-news">
-                                    <a href="#">
-                                        <img alt="" src="<?php  bloginfo('template_directory');?>/assets/images/product/18.jpg" />
-                                    </a>
-                                    <h3><a href="#">YouTube Go is a new app for offline viewing and sharing </a></h3>
-                                    <div class="meta-post">
-                                        <a href="#">
-                                            Super User
-                                        </a>
-                                        <em></em>
-                                        <span>
-                                            25 Sep 2016
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                              <?php endwhile;?>
                         </div>
                     </div>
                 </div>
@@ -108,7 +121,8 @@
                 </div>
                 <ul class="hidden-sm hidden-xs">
                     <li>
-                    <?php wp_nav_menu(array(
+                    <?php 
+                        wp_nav_menu(array(
                             'location_theme'=>'primary',
                             'depth'         =>'0',
                             'container'     =>false,
@@ -124,9 +138,11 @@
                     <div class="search-icon-inner">
                         <i class="fa fa-search"></i>
                     </div>
+                <form role="search" method="get" class="search-form" action="<?php echo   home_url( '/' ); ?>">
                     <div class="search-box">
-                        <input type="text" placeholder="Search..." />
-                        <button>Search</button>
+                        <input type="text" name='s' id='s' placeholder="Search..."  value="<?php echo get_search_query(); ?>"/>
+                        <button type="submit" id="searchsubmit">Search</button>
                     </div>
+                    </form>
                 </div>
             </nav>

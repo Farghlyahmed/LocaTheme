@@ -26,23 +26,39 @@
                             if ( has_custom_logo() ) {
                                     echo '<img src="'. esc_url( $logo[0] ) .'">';
                             } else {?>
-                                   <img src=<?php bloginfo('template_url');?>/assets/images/logo.png />;
+                                   <img src=<?php bloginfo('template_url');?>/assets/images/loca.png />;
                            <?php  }
                             ?>
                             </a>
+                            <?php if( get_theme_mod( 'footer_text_block') != "" ): ?>
+                                 <p class="footer-text">
+                                 <?php echo get_theme_mod( 'footer_text_block'); ?>
+                                 </p>
+                            <?php else :?>
                             <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</p>
+                            <?php endif;?>
                         </div>
                         <!--end of logo and about section-->
                     </div>
                     <!--start of category section-->
                     <div class="col-md-3 col-md-offset-1 col-sm-4 col-xs-12">
                         <h3>Hot Categories</h3>
+                        
                         <ul class="list-category">
+                            <?php
+                                $args = array(
+                                'title_li' => '',
+                                'orderby' => 'count',
+                                );
                             
-                            <li><a href="business.html">Economy</a></li>
+                                wp_list_categories( $args );
+                            
+                            ?>
+                            <!--<li><a href="business.html">Economy</a></li>
                             <li><a href="business.html">politics</a></li>
-                       
+                       -->
                         </ul>
+                        
                     </div>
                     <!--end of category section-->
                     
@@ -51,21 +67,34 @@
                         <h3>HOT TAGS</h3>
 
                         <div class="list-tags">
-                            <a href="#">iPhone 7</a>
-                            <a href="#">News</a>
-                            <a href="#">Sport</a>
-                            <a href="#">Apple</a>
-                            <a href="#">Alcatel</a>
-                            <a href="#">Pixi 4</a>
-                            <a href="#">Elon Musk </a>
-                            <a href="#">Smart phone</a>
-                            <a href="#">Nexus</a>
-                            <a href="#">Canvas</a>
-
-                        </div>
-                    </div>
+                            
+                          <?php  
+                             $args = array(
+                            'smallest'                  => 14,
+                            'largest'                   =>18,
+                            'unit'                      => 'px', 
+                            'number'                    => 10,  
+                            'format'                    => 'flat',
+                            'separator'                 => "\n",
+                            'orderby'                   => 'name', 
+                            'order'                     => 'ASC',
+                            'exclude'                   => null, 
+                            'include'                   => null, 
+                            'topic_count_text_callback' => default_topic_count_text,
+                            'link'                      => 'view', 
+                            'taxonomy'                  => 'post_tag', 
+                        );
+                            ?>
+                            <?php if ( function_exists( 'wp_tag_cloud' ) ) : ?>    
+                            <?php wp_tag_cloud( $args ); ?>
+                            <!--<a href="#">News</a>
+                            <?php endif;?>
+                          
                     <!-- end of hot tags-->
+                    
                 </div>
+                
+            </div>
                 <!--All right-->
                 <div class="allright">
                     <div class="row">
@@ -112,6 +141,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </footer>
 
 </div><!-- #page -->

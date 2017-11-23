@@ -12,21 +12,18 @@ get_header(); ?>
  <div class="row">
                 <!--colleft-->
                 <div class="col-md-8 col-sm-12">
-                    <div class="box-caption">
-                        <span>Last news</span>
-                    </div>
                     <!--list-news-cate-->
                     <div class="list-news-cate">
 
 		<?php
 		if ( have_posts() ) : ?>
 
-			<header class="page-header">
+		
 				<h1 class="page-title"><?php
 					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'loca' ), '<span>' . get_search_query() . '</span>' );
+					printf( esc_html__( 'Search Results for: %s', 'loca' ), '<span class="search_words">' . get_search_query() . '</span>' );
 				?></h1>
-			</header><!-- .page-header -->
+			
 
 			<?php
 			/* Start the Loop */
@@ -41,7 +38,7 @@ get_header(); ?>
 
 			endwhile;
 
-			the_posts_navigation();
+			//the_posts_navigation();
 
 		else :
 

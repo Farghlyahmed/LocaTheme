@@ -10,17 +10,15 @@
 ?>
 
                                     
-                             
-                                
+                                          
 <article id="post-<?php the_ID(); ?>" <?php post_class('news-cate-item'); ?>>
 	<div class="row">
 		
-        
-       <?php
+         <?php
 		if ( 'post' === get_post_type() ) : ?>
 		<div class="col-md-5 col-sm-5 col-xs-12">
            
-            <a href="#">
+            <a href="<?php echo esc_url( get_permalink() );?>">
                <?php the_post_thumbnail();?>
             </a>
         </div>
@@ -29,35 +27,32 @@
      endif; ?>
      <div class="col-md-7 col-sm-7 col-xs-12">
         <?php
-		if ( is_singular() ) :
-			the_title( '<h3>', '</h3>' );
-		else :
+		
 			the_title( '<h3 ><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h3>' );
-		endif;
         ?>
             <div class="meta-post">
-                <?php if(isset($_session['user_name'])):
+                <?php if(isset($_SESSION['user_name'])):
                     the_author();
                 else:
                     the_author_posts_link();
                  endif; ?>
                 <em></em>
                 <span>
-                    <?php get_the_date();?>
+                    <?php echo get_the_date('d-M-Y');?>
                 </span>
             </div>
-        <?php  if ( is_singular() ) :
-			the_content( '<p>', '</p>' );
-		else :
+        <?php  
 			the_excerpt();
-		endif;
          ?>
+    
             
         </div>
-    </div><!-- .entry-header -->
+    </div>
 
 
 	
 </article>
 
-<!-- #post-<?php the_ID(); ?> -->
+    
+
+ 

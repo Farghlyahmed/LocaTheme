@@ -11,10 +11,7 @@
 
 
 <section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'loca' ); ?></h1>
-	</header><!-- .page-header -->
-
+	
 	<div class="page-content">
 		<?php
 		if ( is_home() && current_user_can( 'publish_posts' ) ) : ?>
@@ -36,7 +33,17 @@
 
 		<?php elseif ( is_search() ) : ?>
 
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'loca' ); ?></p>
+			
+			
+                <header class="page-header">
+				<h1 class="page-title"><?php
+					/* translators: %s: search query. */
+					printf( esc_html__( 'Search Results for: %s', 'loca' ), '<span class="search_words">' . get_search_query() . '</span>' );
+                
+				?></h1></header>
+				<p > <?php esc_html_e( ucwords('sorry, but nothing matched your search Keywords try to search using different keywords'), 'loca' ); ?></p>
+			
+               
 			<?php
 				get_search_form();
 

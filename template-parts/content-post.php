@@ -78,22 +78,31 @@
 			
         ?>
             <div class="meta-post">
-                <a href="#">
-                    <?php the_author();?>
-                </a>
+                <?php if(isset($_SESSION['user_name'])):
+                    the_author();
+                else:
+                    the_author_posts_link();
+                 endif; ?>
                 <em></em>
                 <span>
-                    <?php get_the_date();?>
+                    <?php echo get_the_date('d-M-Y');?>
                 </span>
+               
                 <span>
-                  <?php   echo $post->ID ?>
                 </span>
             </div>
             
             <!-- Social media share button -->
             <div class="social-media">
               <div class="facebook">
-               <div class="fb-share-button" data-href="<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>
+                  <!--
+                      *data-layout="button"
+                      *data-layout="button_count"
+                  
+                  -->
+              
+              
+               <div class="fb-share-button" data-href="<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>" data-layout="button" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>
                </div>
                 
                 <div class="google-plus">
@@ -109,6 +118,7 @@
              <!-- end of Social media share button -->
         <?php  
 			the_content( '<p>', '</p>' );
+            wpb_set_post_views(get_the_ID());
          ?>
             
         </div>
@@ -118,4 +128,4 @@
 	
 </article>
 
-<!-- #post-<?php the_ID(); ?> -->
+<!-- #post-<?php /*the_ID();*/ ?> -->

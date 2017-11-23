@@ -42,10 +42,12 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                       <div role="tabpanel" class="tab-pane " id="tab1">
+                       <div role="tabpanel" class="tab-pane active" id="tab1">
+                           
                             <ul class="list-news-popular">
                               <?php 
-                               query_posts('meta_key=post_views_count&orderby=meta_value_num&order=DESC&posts_per_page=3');
+                              
+                            query_posts('meta_key=wpb_post_views_count&orderby=meta_value_num&order=DESC&posts_per_page=5');
                                /*$popularpost  = new WP_Query( array( 'posts_per_page' => 5, 'meta_key' => 'wpb_post_views_count', 'orderby' => 'meta_value_num', 'order' => 'DESC'  ) );*/
 
                                 while (have_posts() ) :the_post();?>
@@ -56,7 +58,7 @@
                                        </a>
                                        <h3><a href="<?php echo esc_url( get_permalink() ); ?>"><?php  limit_word_count(the_title()); ?></a></h3>
                                     <div class="meta-post">
-                                        <a href="<?php echo the_author_link(); ?>">
+                                        <a href="<?php the_author_link(); ?>">
                                             <?php the_author(); ?>
                                         </a>
                                         <em></em>
@@ -80,9 +82,11 @@
                                 ?>
                                 
                             </ul>
+                            
                         </div>
                         
-                        <div role="tabpanel" class="tab-pane active" id="tab2">
+                        <div role="tabpanel" class="tab-pane" id="tab2">
+                           
                             <ul class="list-news-popular">
                      
                            
@@ -122,6 +126,7 @@
                         </div>
                         
                         <div role="tabpanel" class="tab-pane " id="tab3">
+                           
                             <ul class="list-news-popular">
                                <?php 
                                     //Create WordPress Query with 'orderby' set to 'rand' (Random)
@@ -153,6 +158,7 @@
                                 ?>
                                
                             </ul>
+                            
                         </div>
                     </div>
 
@@ -217,7 +223,7 @@
                             <article class="news-two-large">
                             
                                 <?php
-                               query_posts('meta_key=post_views_count&orderby=meta_value_num&order=DESC&posts_per_page=2');
+                               query_posts('meta_key=wpb_post_views_count&orderby=meta_value_num&order=ASC&posts_per_page=2');
                                 while (have_posts()) :the_post();?>
                                 <a href="#">
                                   <?php the_post_thumbnail(); ?>
@@ -243,40 +249,6 @@
                                 ?>
                             </article>
 
-                  <!--          <article class="news-two-large">
-                                <a href="#">
-                                    <img alt="" src="<?php /*bloginfo('template_url');*/ ?>/assets/images/product/6.jpg">
-                                </a>
-                                <h3><a href="#">7 essential lessons from agency marketing to startup growth</a></h3>
-                                <div class="meta-post">
-                                    <a href="#">
-                                        Sue	Benson
-                                    </a>
-                                    <em></em>
-                                    <span>
-                                        23 Sep 2016
-                                    </span>
-                                </div>
-
-                            </article>
-
-                            <article class="news-two-large special-item-fix">
-                                <a href="#">
-                                    <img alt="" src="<?php bloginfo('template_url'); ?>/assets/images/product/5.jpg">
-                                </a>
-                                <h3><a href="#">Messenger Bots Are Overhyped, Underpowered—and Growing like Crazy</a></h3>
-                                <div class="meta-post">
-                                    <a href="#">
-                                        admin
-                                    </a>
-                                    <em></em>
-                                    <span>
-                                        26 Sep 2016
-                                    </span>
-                                </div>
-
-                            </article>
--->
                         </div>
                     </div>
                     <!-- advertisement-->
